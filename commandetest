@@ -22,6 +22,6 @@ def ask_for_asset(message):
 def receive_asset_response(message):
     user_id = message.from_user.id
     user_responses[user_id] = message.text  # Stocke la réponse de l'utilisateur
-    bot.send_message(message.chat.id, MDSpecific(message.text) + message.text)
+    bot.send_message(message.chat.id, MDSpecific(user_responses[user_id]))
 
 bot.infinity_polling()
