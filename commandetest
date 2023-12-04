@@ -3,12 +3,12 @@ import requests
 
 TOKEN = '6879191013:AAHQBYclNWSKKgthF5NkFl3ouiGvgoVsNs8'
 bot = telebot.TeleBot(TOKEN)
-
+clefmob= 'cdba8fd7-e2c0-4511-99e9-267c2fca0f6b'
 # Dictionnaire pour stocker les réponses des utilisateurs
 user_responses = {}
 def MDSpecific(AssetName):
     url = "https://api.app-mobula.com/api/1/market/data"
-    querystring = {"asset":AssetName}
+    querystring = {"asset":AssetName,"APIkey":clefmob}
     response = requests.request("GET", url, params=querystring)
     print(response.text)
 
