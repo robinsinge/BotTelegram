@@ -1,0 +1,27 @@
+import telebot
+import requests
+
+TOKEN = '6879191013:AAHQBYclNWSKKgthF5NkFl3ouiGvgoVsNs8'
+bot = telebot.TeleBot(TOKEN)
+
+# Dictionnaire pour stocker les réponses des utilisateurs
+user_responses = {}
+def MDSpecific(AssetName):
+    url = "https://api.app-mobula.com/api/1/market/data"
+    querystring = {"asset":AssetName}
+    response = requests.request("GET", url, params=querystring)
+    print(response.text)
+
+@bot.message_handler(commands=['marketdata'])
+def ask_for_asset(message):
+    user_id = message.from_user.id
+    bot.send_message(message.chat.id, "De quel asset voulez-vous la market data?")
+    user_responses[user_id] = None  # Initialise l'entrée pour l'utilisateur
+
+@bot.message_handler(func=lambda message: message.from_user.id in user_responses and user_responses[message.from_user.id] is None)
+def receive_asset_response(message):
+    user_id = message.from_user.id
+    user_responses[user_id] = message.text  # Stocke la réponse de l'utilisateur
+    bot.send_message(message.chat.id, MDSpecific(message.txt) + message.text)
+
+bot.infinity_polling()
